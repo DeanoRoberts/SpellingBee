@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 /**
  * Spelling Bee
- *
+ * <p>
  * This program accepts an input of letters. It prints to an output file
  * all English words that can be generated from those letters.
- *
+ * <p>
  * For example: if the user inputs the letters "doggo" the program will generate:
  * do
  * dog
@@ -18,14 +18,14 @@ import java.util.Scanner;
  * gogo
  * goo
  * good
- *
+ * <p>
  * It utilizes recursion to generate the strings, mergesort to sort them, and
  * binary search to find them in a dictionary.
  *
  * @author Zach Blick, [ADD YOUR NAME HERE]
- *
+ * <p>
  * Written on March 5, 2023 for CS2 @ Menlo School
- *
+ * <p>
  * DO NOT MODIFY MAIN OR ANY OF THE METHOD HEADERS.
  */
 public class SpellingBee {
@@ -68,7 +68,36 @@ public class SpellingBee {
     // TODO: For each word in words, use binary search to see if it is in the dictionary.
     //  If it is not in the dictionary, remove it from words.
     public void checkWords() {
-        // YOUR CODE HERE
+        ArrayList<String> goodWords = new ArrayList<>();
+
+        for (int i = 0; i < words.size(); i++) {
+            if (checkWordsBinarySearch(DICTIONARY, words.get(i))) {
+                goodWords.add(words.get(i));
+            }
+        }
+        words = goodWords;
+    }
+
+    private boolean checkWordsBinarySearch(String[] dictionary, String theWord) {
+        int left = 0;
+        int right = dictionary.length - 1;
+
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            int compareValue = dictionary[middle].compareTo(theWord);
+
+            if (compareValue == 0) {
+                return true;
+            } else if (compareValue < 0) {
+                left = middle + 1;
+
+            } else {
+                right = middle - 1;
+            }
+
+
+        }
+        return false;
     }
 
     // Prints all valid words to wordList.txt
@@ -104,7 +133,7 @@ public class SpellingBee {
             return;
         }
         int i = 0;
-        while(s.hasNextLine()) {
+        while (s.hasNextLine()) {
             DICTIONARY[i++] = s.nextLine();
         }
     }
