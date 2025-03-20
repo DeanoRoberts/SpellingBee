@@ -1,3 +1,5 @@
+// Spelling Bee By Deano Roberts
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -30,8 +32,11 @@ import java.util.Scanner;
  */
 public class SpellingBee {
 
+    // Inputted letters from user
     private String letters;
+    // stores generated words
     private ArrayList<String> words;
+    // Our Dictionary Constants
     public static final int DICTIONARY_SIZE = 143091;
     public static final String[] DICTIONARY = new String[DICTIONARY_SIZE];
 
@@ -45,16 +50,41 @@ public class SpellingBee {
     //  that will find the substrings recursively.
     public void generate() {
         // YOUR CODE HERE — Call your recursive method!
+        wordMaker("", letters);
+    }
+
+    // Recursive method to generate the words from the letters
+    public void wordMaker(String word, String letters) {
+        // Adds our current word
+        words.add(word);
+        // Base case
+        if (letters.isEmpty()) {
+            return;
+        }
+        // Generates all words by adding each character
+        for (int i = 0; i < letters.length(); i++) {
+            String newWord = word + letters.charAt(i);
+            String newLetters = letters.substring(0, i) + letters.substring(i + 1);
+            wordMaker(newWord, newLetters);
+        }
     }
 
     // TODO: Apply mergesort to sort all words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void sort() {
+        // Recursive call
+        words = mergeSort(words);
         // YOUR CODE HERE
 
     }
 
     private ArrayList<String> mergeSort(ArrayList<String> wordList) {
+        // Base case
+        if (wordList.size() <= 1) {
+            return wordList;
+        }
+
+        // Splits the list into two halves
         int mid = wordList.size() / 2;
         ArrayList<String> leftSide = new ArrayList<>();
         ArrayList<String> rightSide = new ArrayList<>();
@@ -66,7 +96,7 @@ public class SpellingBee {
         for (int i = mid; i < wordList.size(); i++) {
             rightSide.add(wordList.get(i));
         }
-
+        // Merge sorts both halfs then merges the left and right side
         leftSide = mergeSort(leftSide);
         rightSide = mergeSort(rightSide);
         return merge(leftSide, rightSide);
@@ -77,7 +107,7 @@ public class SpellingBee {
         int index1 = 0;
         int index2 = 0;
         int count = 0;
-
+        // Merges all elements form the lists
         while (index1 < leftSide.size() && index2 < rightSide.size()) {
             if (leftSide.get(index1).compareTo(rightSide.get(index2)) < 0) {
                 sol.add(leftSide.get(index1++));
